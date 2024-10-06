@@ -1,0 +1,20 @@
+{
+  "name": "FastBLEOTA",
+  "version": "1.0.0",
+  "description": "A simple Over-The-Air (OTA) update mechanism using NimBLE for ESP32.",
+  "keywords": ["BLE", "NimBLE", "OTA", "ESP32"],
+  "homepage": "https://github.com/LeeorNahum/FastBLEOTA",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeeorNahum/FastBLEOTA.git"
+  },
+  "authors":
+  [
+    {
+      "name": "Leeor Nahum",
+      "email": "leeornahum@gmail.com"
+    }
+  ],
+  "frameworks": "arduino",
+  "platforms": "*"
+}
