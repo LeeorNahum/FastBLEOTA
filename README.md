@@ -34,7 +34,7 @@ Create a batch script named `BLE_OTA.bat` with the following content, replacing 
 
 ```batch
 cd /d "%~dp0"
-python "BLE OTA.py" --address <BLE_DEVICE_ADDRESS> --file "<FIRMWARE_FILE_PATH>"
+python "BLE_OTA.py" --address <BLE_DEVICE_ADDRESS> --file "<FIRMWARE_FILE_PATH>"
 pause
 ```
 
