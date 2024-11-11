@@ -20,24 +20,24 @@ lib_deps =
   https://github.com/LeeorNahum/FastBLEOTA.git
 ```
 
-#### **Features to be implemented**
+## Usage
 
-The following features are planned to be implemented:
+You can use the `BLE_OTA.py` script to upload firmware to your device over BLE. There are two ways to run the script: using the GUI or by creating a batch file with predefined address and path.
 
-*Capability Exchange:* The device can inform the client about supported features (e.g., maximum chunk size).
+### Using the GUI
 
-*Sending Firmware Size and Metadata:*
+Simply run the script without any arguments to use the GUI
 
-* *Firmware Size Characteristic:* Client writes the total firmware size to the device.
-* *Metadata Characteristic (Optional):* Include version information, checksum/hash values.
+### Using a Batch File
 
-*Acknowledgment:* Device acknowledges receipt and readiness to receive data.
+Create a batch script named `BLE_OTA.bat` with the following content, replacing `<BLE_DEVICE_ADDRESS>` with your device's BLE address and `<FIRMWARE_FILE_PATH>` with the path to your firmware file:
 
-*Checksum/Hash Verification:* Device calculates a checksum/hash of received data.
-Compares it to the value provided by the client.
+```batch
+cd /d "%~dp0"
+python "BLE OTA.py" --address <BLE_DEVICE_ADDRESS> --file "<FIRMWARE_FILE_PATH>"
+pause
+```
 
-*Progress Notifications:* Device can send notifications about programming progress.
+This batch file will navigate to the script's directory and execute the `BLE_OTA.py` script with the specified arguments.
 
-*Final Status Update:* Device sends a final status update indicating successful update.
-
-*Reset Command:* Client can send a Reset command to the device to make it reset after completion.
+Both methods will initiate the firmware upload process to your BLE device.
