@@ -11,8 +11,9 @@ FastBLEOTACallbacks* FastBLEOTA::_callbacks = nullptr;
 #define OTA_SERVICE_UUID        "4e8cbb5e-bc0f-4aab-a6e8-55e662418bef"
 #define OTA_CHARACTERISTIC_UUID "513fcda9-f46d-4e41-ac4f-42b768495a85"
 
+// NimBLE 2.x callback signature requires NimBLEConnInfo& parameter
 class FastBLEOTA::CharacteristicCallbacks : public NimBLECharacteristicCallbacks {
-  void onWrite(NimBLECharacteristic* pCharacteristic) {
+  void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) override {
     std::string value = pCharacteristic->getValue();
     FastBLEOTA::processData((uint8_t*)value.data(), value.length());
   }
