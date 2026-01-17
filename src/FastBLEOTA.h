@@ -21,12 +21,12 @@
 #include <NimBLEDevice.h>
 
 // Include platform-specific storage backend
-#include "src/OTAStorage.h"
+#include "OTAStorage.h"
 
 #ifdef FBO_PLATFORM_ESP32
-  #include "src/OTAStorageESP32.h"
+  #include "OTAStorageESP32.h"
 #elif defined(FBO_PLATFORM_NRF52)
-  #include "src/OTAStorageNRF52.h"
+  #include "OTAStorageNRF52.h"
 #endif
 
 // -----------------------------------------------------------------------------
