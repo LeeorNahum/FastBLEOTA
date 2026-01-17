@@ -27,9 +27,11 @@
   ],
   "frameworks": "arduino",
   "platforms": ["espressif32", "n-able", "nordicnrf52"],
-  "headers": "src/FastBLEOTA.h",
+  "headers": "FastBLEOTA.h",
   "export": {
     "include": [
+      "FastBLEOTA.h",
+      "FastBLEOTA.cpp",
       "src/*",
       "examples/*",
       "BLE_OTA.py",
@@ -39,8 +41,5 @@
   "dependencies": {
     "h2zero/NimBLE-Arduino": "^2.0.0",
     "arduino-libraries/Arduino_CRC32": "^1.0.0"
-  },
-  "build": {
-    "srcDir": "src"
   }
 }
