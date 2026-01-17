@@ -1,20 +1,46 @@
 {
   "name": "FastBLEOTA",
-  "version": "1.0.0",
-  "description": "A simple Over-The-Air (OTA) update mechanism using NimBLE for ESP32.",
-  "keywords": ["BLE", "NimBLE", "OTA", "ESP32"],
+  "version": "3.0.0",
+  "description": "Fast and simple BLE Over-The-Air firmware updates for ESP32 and nRF52. Features CRC32 validation, progress notifications, flow control, and cross-platform support.",
+  "keywords": [
+    "BLE",
+    "Bluetooth",
+    "OTA",
+    "firmware",
+    "update",
+    "ESP32",
+    "nRF52",
+    "NimBLE",
+    "cross-platform"
+  ],
   "homepage": "https://github.com/LeeorNahum/FastBLEOTA",
   "repository": {
     "type": "git",
     "url": "https://github.com/LeeorNahum/FastBLEOTA.git"
   },
-  "authors":
-  [
+  "authors": [
     {
       "name": "Leeor Nahum",
-      "email": "leeornahum@gmail.com"
+      "email": "leeornahum@gmail.com",
+      "maintainer": true
     }
   ],
   "frameworks": "arduino",
-  "platforms": "*"
+  "platforms": ["espressif32", "n-able", "nordicnrf52"],
+  "headers": "FastBLEOTA.h",
+  "export": {
+    "include": [
+      "src/*",
+      "examples/*",
+      "BLE_OTA.py",
+      "README.md"
+    ]
+  },
+  "dependencies": {
+    "h2zero/NimBLE-Arduino": "^2.0.0",
+    "arduino-libraries/Arduino_CRC32": "^1.0.0"
+  },
+  "build": {
+    "srcDir": "src"
+  }
 }
