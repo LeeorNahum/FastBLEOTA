@@ -278,6 +278,10 @@ The `onComplete()` callback is called immediately before the restart, giving you
 | 9 | FBO_ERROR_ABORTED | Update aborted by user/client |
 | 10 | FBO_ERROR_NOT_SUPPORTED | Platform doesn't support OTA |
 
+## Related
+
+- [BLE-OTA-Tester](https://github.com/LeeorNahum/BLE-OTA-Tester) - Hardware tester for FastBLEOTA using ESP32-S3 with visual OTA verification
+
 ## Credits
 
 - [NimBLE-Arduino](https://github.com/h2zero/NimBLE-Arduino) by h2zero
