@@ -121,7 +121,7 @@ Cross-platform implementations:
 
 ### ESP32
 
-- Requires OTA partition table: `board_build.partitions = min_spiffs.csv`
+- Default partition tables include OTA support. Only configure if app exceeds ~1.25MB on 4MB boards.
 - Uses `Update.h` library
 
 ### nRF52

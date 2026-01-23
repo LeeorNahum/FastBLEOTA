@@ -35,35 +35,26 @@ lib_deps =
 
 ### ESP32 Partition Table
 
-ESP32 requires an OTA-capable partition table with two app slots. The default Arduino partition table does **not** include OTA support. You must specify one:
+ESP32 OTA requires a partition table with two app slots (`ota_0`, `ota_1`) and an `otadata` partition. The default partition tables already include these, so no configuration is typically needed.
 
-**PlatformIO (built-in partition tables with OTA support):**
+| Board Type | Default Partition | App Size |
+|------------|-------------------|----------|
+| 8MB+ boards (most ESP32-S3) | `default_8MB.csv` | ~3.2MB |
+| 4MB boards | `default.csv` | ~1.25MB |
+
+**Alternative partition tables** (if your firmware exceeds the default app size):
 
 ```ini
-board_build.partitions = min_spiffs.csv   ; 4MB flash, ~1.8MB per app
-board_build.partitions = default_8MB.csv  ; 8MB flash, ~3MB per app  
-board_build.partitions = default_16MB.csv ; 16MB flash
+board_build.partitions = min_spiffs.csv    ; 4MB flash, ~1.8MB per app
+board_build.partitions = default_16MB.csv  ; 16MB flash
 ```
 
-Or create a custom `partitions.csv` in your project root for full control.
+**nRF52** does not require partition configuration.
 
-**Custom partition table example (`partitions_ota.csv`):**
+**Resources:**
 
-```csv
-# Name,   Type, SubType, Offset,  Size, Flags
-nvs,      data, nvs,     0x9000,  0x5000,
-otadata,  data, ota,     0xe000,  0x2000,
-app0,     app,  ota_0,   0x10000, 0x1E0000,
-app1,     app,  ota_1,   0x1F0000,0x1E0000,
-spiffs,   data, spiffs,  0x3D0000,0x20000,
-```
-
-The key requirements are:
-
-- `otadata` partition (tracks which app slot is active)
-- Two `app` partitions (`ota_0` and `ota_1`) of equal size
-
-**nRF52 does NOT require partition configuration** - the library automatically divides available flash between the application and OTA staging area.
+- [Arduino-ESP32 partition tables](https://github.com/espressif/arduino-esp32/tree/master/tools/partitions)
+- [ESP32 PlatformIO Flash configurations](https://github.com/sivar2311/ESP32-PlatformIO-Flash-and-PSRAM-configurations)
 
 ### Minimal Example
 
@@ -226,7 +217,7 @@ FastBLEOTA.setCallbacks(new MyOTACallbacks());
 
 | Platform | Storage Backend | Notes |
 | -------- | ---------------- | ----- |
-| ESP32 | `Update.h` | All variants (ESP32, S2, S3, C3, C6). Requires OTA partition table. |
+| ESP32 | `Update.h` | All variants (ESP32, S2, S3, C3, C6). Default partitions include OTA. |
 | nRF52840 | `NRF_NVMC` | Direct flash access. 1MB flash, ~400KB usable for OTA. |
 | nRF52832 | `NRF_NVMC` | 512KB flash, ~200KB usable for OTA. |
 
@@ -234,7 +225,6 @@ FastBLEOTA.setCallbacks(new MyOTACallbacks());
 
 - **NimBLE-Arduino** >= 2.0.0
 - **Python 3.7+** with `bleak` library (for uploader)
-- OTA-capable partition table (ESP32 only)
 
 ## Architecture
 
