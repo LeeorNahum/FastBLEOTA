@@ -40,10 +40,10 @@
 // -----------------------------------------------------------------------------
 // BLE UUIDs
 // -----------------------------------------------------------------------------
-const NimBLEUUID FBO_SERVICE_UUID                   ("a4517317-df10-4aed-bcbd-442977fe3fe5");
-const NimBLEUUID FBO_DATA_CHARACTERISTIC_UUID       ("d026496c-0b77-43fb-bd68-fce361a1be1c");
-const NimBLEUUID FBO_CONTROL_CHARACTERISTIC_UUID    ("98f56d4d-0a27-487b-a01b-03ed15daedc7");
-const NimBLEUUID FBO_PROGRESS_CHARACTERISTIC_UUID   ("094b7399-a3a0-41f3-bf8b-5d5f3170ceb0");
+const NimBLEUUID OTA_SERVICE_UUID                   ("a4517317-df10-4aed-bcbd-442977fe3fe5");
+const NimBLEUUID OTA_DATA_CHARACTERISTIC_UUID       ("d026496c-0b77-43fb-bd68-fce361a1be1c");
+const NimBLEUUID OTA_CONTROL_CHARACTERISTIC_UUID    ("98f56d4d-0a27-487b-a01b-03ed15daedc7");
+const NimBLEUUID OTA_PROGRESS_CHARACTERISTIC_UUID   ("094b7399-a3a0-41f3-bf8b-5d5f3170ceb0");
 
 // -----------------------------------------------------------------------------
 // Configuration Macros
@@ -192,18 +192,15 @@ public:
 
 class FastBLEOTAClass {
 public:
-  FastBLEOTAClass();
-  
   // -------------------------------------------------------------------------
   // Initialization
   // -------------------------------------------------------------------------
   
   /**
-   * @brief Initialize FastBLEOTA with default UUIDs
-   * @param pServer Pointer to NimBLE server
+   * @brief Initialize FastBLEOTA and start the OTA service
+   * @return true if service started successfully, false otherwise
    */
-  void begin(NimBLEServer* pServer);
-  
+  bool startService();
   
   /**
    * @brief Set callback handler
@@ -219,13 +216,13 @@ public:
    * @brief Get current OTA state
    * @return Current state
    */
-  fbo_state_t getState();
+  fbo_state_t getState() { return state; }
   
   /**
    * @brief Get last error code
    * @return Last error (FBO_ERROR_NONE if no error)
    */
-  fbo_error_t getLastError();
+  fbo_error_t getLastError() { return last_error; }
   
   /**
    * @brief Get progress percentage
@@ -242,22 +239,22 @@ public:
    * @brief Check if OTA is in progress
    * @return true if receiving firmware
    */
-  bool isActive();
+  bool isActive() { return state == FBO_STATE_RECEIVING; }
   
   // -------------------------------------------------------------------------
-  // UUID Accessors (for logging/debugging)
+  // Accessors
   // -------------------------------------------------------------------------
   
-  const NimBLEUUID& getServiceUUID();
-  const NimBLEUUID& getDataCharacteristicUUID();
-  const NimBLEUUID& getControlCharacteristicUUID();
-  const NimBLEUUID& getProgressCharacteristicUUID();
+  NimBLEService* getService() { return ota_service; }
+  NimBLECharacteristic* getDataCharacteristic() { return data_characteristic; }
+  NimBLECharacteristic* getControlCharacteristic() { return control_characteristic; }
+  NimBLECharacteristic* getProgressCharacteristic() { return progress_characteristic; }
   
   // -------------------------------------------------------------------------
   // Version Info
   // -------------------------------------------------------------------------
   
-  const char* getVersion();
+  const char* getVersion() { return FASTBLEOTA_VERSION_STRING; }
   const char* getPlatform();
   
   // -------------------------------------------------------------------------
@@ -267,40 +264,33 @@ public:
   void processDataPacket(const uint8_t* data, size_t length);
   void processControlCommand(uint8_t command);
   void sendProgressNotification();
-  
+
 private:
-  // BLE components
-  NimBLEService* _pService;
-  NimBLECharacteristic* _pDataCharacteristic;
-  NimBLECharacteristic* _pControlCharacteristic;
-  NimBLECharacteristic* _pProgressCharacteristic;
+  NimBLEService* ota_service = nullptr;
   
-  // State
-  fbo_state_t _state;
-  fbo_error_t _lastError;
+  NimBLECharacteristic* data_characteristic = nullptr;
+  NimBLECharacteristic* control_characteristic = nullptr;
+  NimBLECharacteristic* progress_characteristic = nullptr;
   
-  // Transfer tracking
-  size_t _expectedSize;
-  size_t _receivedSize;
-  uint32_t _expectedCRC;
-  uint32_t _calculatedCRC;
-  uint8_t _lastNotifiedPercent;
-  uint32_t _chunkCount;
+  fbo_state_t state = FBO_STATE_IDLE;
+  fbo_error_t last_error = FBO_ERROR_NONE;
   
+  size_t expected_size = 0;
+  size_t received_size = 0;
+  uint32_t expected_crc = 0;
+  uint32_t calculated_crc = 0;
+  uint8_t last_notified_percent = 0;
+  uint32_t chunk_count = 0;
   
-  // Callbacks
-  FastBLEOTACallbacks* _callbacks;
+  FastBLEOTACallbacks* ota_callbacks = nullptr;
   
-  // Internal callback classes
-  class DataCharacteristicCallbacks;
-  class ControlCharacteristicCallbacks;
+  class DataCallbacks;
+  class ControlCallbacks;
   
-  // Characteristic creation
   void createDataCharacteristic();
   void createControlCharacteristic();
   void createProgressCharacteristic();
   
-  // Helper functions
   void processInitPacket(const uint8_t* data, size_t length);
   void processDataChunk(const uint8_t* data, size_t length);
   void finalizeUpdate();
@@ -310,7 +300,6 @@ private:
   const char* errorToString(fbo_error_t error);
 };
 
-// Global instance
 extern FastBLEOTAClass FastBLEOTA;
 
 #endif // FASTBLEOTA_H
