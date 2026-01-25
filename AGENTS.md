@@ -17,7 +17,7 @@ pio run -e nrf52840_dk
 
 ## Core Values
 
-1. **Simplicity**: Single `begin()` call. Minimal configuration. ~400 lines total.
+1. **Simplicity**: Single `startService()` call. Minimal configuration. ~400 lines total.
 2. **Speed**: Fast transfers (ACK every 20 chunks), fast integration (5 minutes).
 3. **Cross-Platform**: Same API for ESP32 and nRF52.
 4. **No Bloat**: Don't add features unless clearly needed.
@@ -155,8 +155,11 @@ Structure: `OTAProtocol` handles BLE, `CLIUploader` handles CLI, GUI is optional
 
 ## Roadmap
 
-### v3.0.0 (Current)
+### v4.0.0 (Current)
 
+- Simplified API: `startService()` replaces `begin(server)`
+- UUIDs now static class members: `FastBLEOTAClass::SERVICE_UUID`
+- Server obtained automatically from `NimBLEDevice::getServer()`
 - CRC32 validation
 - Flow control with ACK
 - Progress notifications every 1%
@@ -164,12 +167,12 @@ Structure: `OTAProtocol` handles BLE, `CLIUploader` handles CLI, GUI is optional
 - Callback interface
 - Python uploader (GUI + CLI)
 
-### v3.1.0 (Next)
+### v4.1.0 (Next)
 
 - Resume support (offset tracking)
 - Improved error recovery
 
-### v3.2.0+ (Future)
+### v4.2.0+ (Future)
 
 - Optional compression
 - Capability characteristic (if needed)

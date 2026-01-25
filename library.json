@@ -1,6 +1,6 @@
 {
   "name": "FastBLEOTA",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Fast and simple BLE Over-The-Air firmware updates for ESP32 and nRF52. Features CRC32 validation, progress notifications, flow control, and cross-platform support.",
   "keywords": [
     "BLE",

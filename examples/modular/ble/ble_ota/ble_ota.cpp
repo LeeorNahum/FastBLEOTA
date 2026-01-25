@@ -39,11 +39,11 @@ public:
 
 void bleStartOTA() {
   FastBLEOTA.setCallbacks(new OTACallbacks());
-  FastBLEOTA.begin(bleGetServer());
+  FastBLEOTA.startService();
   
-  Serial.printf("[OTA] Service started (UUID: %s)\n", FastBLEOTA.getServiceUUID().toString().c_str());
+  Serial.printf("[OTA] Service started (UUID: %s)\n", FastBLEOTAClass::SERVICE_UUID.toString().c_str());
 }
 
 const NimBLEUUID& bleGetOTAServiceUUID() {
-  return FastBLEOTA.getServiceUUID();
+  return FastBLEOTAClass::SERVICE_UUID;
 }

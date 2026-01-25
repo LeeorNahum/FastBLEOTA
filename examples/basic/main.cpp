@@ -76,18 +76,18 @@ void setup() {
   // Initialize FastBLEOTA
   Serial.println("Initializing FastBLEOTA...");
   FastBLEOTA.setCallbacks(&otaCallbacks);
-  FastBLEOTA.begin(pServer);
+  FastBLEOTA.startService();
   
   // Start advertising
   NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
   pAdvertising->setName(DEVICE_NAME);
-  pAdvertising->addServiceUUID(FastBLEOTA.getServiceUUID());
+  pAdvertising->addServiceUUID(FastBLEOTAClass::SERVICE_UUID);
   pAdvertising->start();
   
   Serial.println();
   Serial.println("Ready for OTA updates!");
   Serial.printf("Device address: %s\n", NimBLEDevice::getAddress().toString().c_str());
-  Serial.printf("Service UUID: %s\n", FastBLEOTA.getServiceUUID().toString().c_str());
+  Serial.printf("Service UUID: %s\n", FastBLEOTAClass::SERVICE_UUID.toString().c_str());
   Serial.println();
   Serial.println("Use BLE_OTA.py to upload firmware:");
   Serial.printf("  python BLE_OTA.py -a %s -f firmware.bin\n", 

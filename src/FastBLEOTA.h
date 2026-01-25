@@ -32,18 +32,10 @@
 // -----------------------------------------------------------------------------
 // Version Information
 // -----------------------------------------------------------------------------
-#define FASTBLEOTA_VERSION_MAJOR 3
+#define FASTBLEOTA_VERSION_MAJOR 4
 #define FASTBLEOTA_VERSION_MINOR 0
 #define FASTBLEOTA_VERSION_PATCH 0
-#define FASTBLEOTA_VERSION_STRING "3.0.0"
-
-// -----------------------------------------------------------------------------
-// BLE UUIDs
-// -----------------------------------------------------------------------------
-const NimBLEUUID OTA_SERVICE_UUID                   ("a4517317-df10-4aed-bcbd-442977fe3fe5");
-const NimBLEUUID OTA_DATA_CHARACTERISTIC_UUID       ("d026496c-0b77-43fb-bd68-fce361a1be1c");
-const NimBLEUUID OTA_CONTROL_CHARACTERISTIC_UUID    ("98f56d4d-0a27-487b-a01b-03ed15daedc7");
-const NimBLEUUID OTA_PROGRESS_CHARACTERISTIC_UUID   ("094b7399-a3a0-41f3-bf8b-5d5f3170ceb0");
+#define FASTBLEOTA_VERSION_STRING "4.0.0"
 
 // -----------------------------------------------------------------------------
 // Configuration Macros
@@ -192,6 +184,16 @@ public:
 
 class FastBLEOTAClass {
 public:
+  // -------------------------------------------------------------------------
+  // BLE UUIDs
+  // -------------------------------------------------------------------------
+  
+  static const NimBLEUUID SERVICE_UUID;
+  
+  static const NimBLEUUID DATA_CHARACTERISTIC_UUID;
+  static const NimBLEUUID CONTROL_CHARACTERISTIC_UUID;
+  static const NimBLEUUID PROGRESS_CHARACTERISTIC_UUID;
+  
   // -------------------------------------------------------------------------
   // Initialization
   // -------------------------------------------------------------------------

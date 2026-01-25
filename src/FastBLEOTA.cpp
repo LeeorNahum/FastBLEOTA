@@ -8,6 +8,12 @@
 #include "FastBLEOTA.h"
 #include <crc.h>
 
+const NimBLEUUID FastBLEOTAClass::SERVICE_UUID("a4517317-df10-4aed-bcbd-442977fe3fe5");
+
+const NimBLEUUID FastBLEOTAClass::DATA_CHARACTERISTIC_UUID("d026496c-0b77-43fb-bd68-fce361a1be1c");
+const NimBLEUUID FastBLEOTAClass::CONTROL_CHARACTERISTIC_UUID("98f56d4d-0a27-487b-a01b-03ed15daedc7");
+const NimBLEUUID FastBLEOTAClass::PROGRESS_CHARACTERISTIC_UUID("094b7399-a3a0-41f3-bf8b-5d5f3170ceb0");
+
 FastBLEOTAClass FastBLEOTA;
 
 class FastBLEOTAClass::DataCallbacks : public NimBLECharacteristicCallbacks {
@@ -47,9 +53,9 @@ bool FastBLEOTAClass::startService() {
                 (unsigned long)testCRC, (testCRC == 0xCBF43926) ? "PASS" : "FAIL");
   #endif
   
-  ota_service = pServer->getServiceByUUID(OTA_SERVICE_UUID);
+  ota_service = pServer->getServiceByUUID(SERVICE_UUID);
   if (ota_service == nullptr) {
-    ota_service = pServer->createService(OTA_SERVICE_UUID);
+    ota_service = pServer->createService(SERVICE_UUID);
   }
   
   createDataCharacteristic();
@@ -67,10 +73,10 @@ void FastBLEOTAClass::createDataCharacteristic() {
   if (ota_service == nullptr) return;
 
   if (data_characteristic == nullptr) {
-    data_characteristic = ota_service->getCharacteristic(OTA_DATA_CHARACTERISTIC_UUID);
+    data_characteristic = ota_service->getCharacteristic(DATA_CHARACTERISTIC_UUID);
     if (data_characteristic == nullptr) {
       data_characteristic = ota_service->createCharacteristic(
-        OTA_DATA_CHARACTERISTIC_UUID,
+        DATA_CHARACTERISTIC_UUID,
         NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::WRITE_NR
       );
 
@@ -79,7 +85,7 @@ void FastBLEOTAClass::createDataCharacteristic() {
       NimBLEDescriptor* user_description = data_characteristic->createDescriptor(NimBLEUUID("2901"), NIMBLE_PROPERTY::READ);
       user_description->setValue("OTA Firmware Data");
 
-      NimBLE2904* presentation_format = (NimBLE2904*)data_characteristic->createDescriptor(NimBLEUUID("2904"));
+      NimBLE2904* presentation_format = (NimBLE2904*)data_characteristic->createDescriptor(NimBLEUUID("2904"), NIMBLE_PROPERTY::READ);
       presentation_format->setFormat(NimBLE2904::FORMAT_OPAQUE);
       presentation_format->setExponent(0x00);
       presentation_format->setUnit(0x2700);
@@ -93,10 +99,10 @@ void FastBLEOTAClass::createControlCharacteristic() {
   if (ota_service == nullptr) return;
 
   if (control_characteristic == nullptr) {
-    control_characteristic = ota_service->getCharacteristic(OTA_CONTROL_CHARACTERISTIC_UUID);
+    control_characteristic = ota_service->getCharacteristic(CONTROL_CHARACTERISTIC_UUID);
     if (control_characteristic == nullptr) {
       control_characteristic = ota_service->createCharacteristic(
-        OTA_CONTROL_CHARACTERISTIC_UUID,
+        CONTROL_CHARACTERISTIC_UUID,
         NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE | NIMBLE_PROPERTY::NOTIFY
       );
 
@@ -105,7 +111,7 @@ void FastBLEOTAClass::createControlCharacteristic() {
       NimBLEDescriptor* user_description = control_characteristic->createDescriptor(NimBLEUUID("2901"), NIMBLE_PROPERTY::READ);
       user_description->setValue("OTA Control");
 
-      NimBLE2904* presentation_format = (NimBLE2904*)control_characteristic->createDescriptor(NimBLEUUID("2904"));
+      NimBLE2904* presentation_format = (NimBLE2904*)control_characteristic->createDescriptor(NimBLEUUID("2904"), NIMBLE_PROPERTY::READ);
       presentation_format->setFormat(NimBLE2904::FORMAT_UINT8);
       presentation_format->setExponent(0x00);
       presentation_format->setUnit(0x2700);
@@ -119,17 +125,17 @@ void FastBLEOTAClass::createProgressCharacteristic() {
   if (ota_service == nullptr) return;
 
   if (progress_characteristic == nullptr) {
-    progress_characteristic = ota_service->getCharacteristic(OTA_PROGRESS_CHARACTERISTIC_UUID);
+    progress_characteristic = ota_service->getCharacteristic(PROGRESS_CHARACTERISTIC_UUID);
     if (progress_characteristic == nullptr) {
       progress_characteristic = ota_service->createCharacteristic(
-        OTA_PROGRESS_CHARACTERISTIC_UUID,
+        PROGRESS_CHARACTERISTIC_UUID,
         NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY
       );
 
       NimBLEDescriptor* user_description = progress_characteristic->createDescriptor(NimBLEUUID("2901"), NIMBLE_PROPERTY::READ);
       user_description->setValue("OTA Progress");
 
-      NimBLE2904* presentation_format = (NimBLE2904*)progress_characteristic->createDescriptor(NimBLEUUID("2904"));
+      NimBLE2904* presentation_format = (NimBLE2904*)progress_characteristic->createDescriptor(NimBLEUUID("2904"), NIMBLE_PROPERTY::READ);
       presentation_format->setFormat(NimBLE2904::FORMAT_OPAQUE);
       presentation_format->setExponent(0x00);
       presentation_format->setUnit(0x2700);

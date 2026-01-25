@@ -2,7 +2,7 @@
 
 Fast and simple BLE Over-The-Air firmware updates for ESP32 and nRF52.
 
-[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/LeeorNahum/FastBLEOTA)
+[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://github.com/LeeorNahum/FastBLEOTA)
 [![Platform](https://img.shields.io/badge/platform-ESP32%20%7C%20nRF52-green.svg)](https://github.com/LeeorNahum/FastBLEOTA)
 
 ## Features
@@ -13,7 +13,7 @@ Fast and simple BLE Over-The-Air firmware updates for ESP32 and nRF52.
 - **Progress Notifications**: Real-time progress via BLE characteristic notifications
 - **Flow Control**: ACK-based mechanism prevents buffer overrun on slower devices
 - **Event Callbacks**: Optional callback interface lets you react to OTA events (start, progress, complete, error, abort) without modifying the library
-- **Simple Integration**: Add OTA to your existing NimBLE project with a single `begin()` call
+- **Simple Integration**: Add OTA to your existing NimBLE project with a single `startService()` call
 - **Python Uploader**: GUI and CLI tool included
 
 ## Quick Start
@@ -67,13 +67,15 @@ void setup() {
   
   // Initialize BLE
   NimBLEDevice::init("MyDevice");
-  NimBLEServer* server = NimBLEDevice::createServer();
+  NimBLEDevice::createServer();
   
-  // Initialize FastBLEOTA
-  FastBLEOTA.begin(server);
+  // Start FastBLEOTA service
+  FastBLEOTA.startService();
   
-  // Start advertising
-  NimBLEDevice::getAdvertising()->start();
+  // Start advertising with OTA service UUID
+  NimBLEAdvertising* pAdvertising = NimBLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(FastBLEOTAClass::SERVICE_UUID);
+  pAdvertising->start();
   
   Serial.println("Ready for OTA updates!");
 }
