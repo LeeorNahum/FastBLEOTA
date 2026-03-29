@@ -199,10 +199,11 @@ public:
   // -------------------------------------------------------------------------
   
   /**
-   * @brief Initialize FastBLEOTA and start the OTA service
+   * @brief Initialize FastBLEOTA and start the OTA service.
+   * @param pServer  Server to attach to.  If nullptr, uses NimBLEDevice::getServer().
    * @return true if service started successfully, false otherwise
    */
-  bool startService();
+  bool startService(NimBLEServer* pServer = nullptr);
   
   /**
    * @brief Set callback handler

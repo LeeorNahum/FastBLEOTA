@@ -40,8 +40,8 @@ public:
   }
 };
 
-bool FastBLEOTAClass::startService() {
-  NimBLEServer* pServer = NimBLEDevice::getServer();
+bool FastBLEOTAClass::startService(NimBLEServer* pServer) {
+  if (pServer == nullptr) pServer = NimBLEDevice::getServer();
   if (pServer == nullptr) return false;
   
   #ifdef FBO_DEBUG
