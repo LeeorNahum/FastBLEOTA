@@ -2,7 +2,7 @@
 
 Fast and simple BLE Over-The-Air firmware updates for ESP32 and nRF52.
 
-[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://github.com/LeeorNahum/FastBLEOTA)
+[![Version](https://img.shields.io/badge/version-4.1.0-blue.svg)](https://github.com/LeeorNahum/FastBLEOTA)
 [![Platform](https://img.shields.io/badge/platform-ESP32%20%7C%20nRF52-green.svg)](https://github.com/LeeorNahum/FastBLEOTA)
 
 ## Features

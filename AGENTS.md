@@ -155,7 +155,7 @@ Structure: `OTAProtocol` handles BLE, `CLIUploader` handles CLI, GUI is optional
 
 ## Roadmap
 
-### v4.0.0 (Current)
+### Current Release (v4.1.0)
 
 - Simplified API: `startService()` replaces `begin(server)`
 - UUIDs now static class members: `FastBLEOTAClass::SERVICE_UUID`
@@ -167,12 +167,12 @@ Structure: `OTAProtocol` handles BLE, `CLIUploader` handles CLI, GUI is optional
 - Callback interface
 - Python uploader (GUI + CLI)
 
-### v4.1.0 (Next)
+### Planned Improvements
 
 - Resume support (offset tracking)
 - Improved error recovery
 
-### v4.2.0+ (Future)
+### Possible Future Enhancements
 
 - Optional compression
 - Capability characteristic (if needed)

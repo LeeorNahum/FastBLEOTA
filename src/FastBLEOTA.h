@@ -33,9 +33,9 @@
 // Version Information
 // -----------------------------------------------------------------------------
 #define FASTBLEOTA_VERSION_MAJOR 4
-#define FASTBLEOTA_VERSION_MINOR 0
+#define FASTBLEOTA_VERSION_MINOR 1
 #define FASTBLEOTA_VERSION_PATCH 0
-#define FASTBLEOTA_VERSION_STRING "4.0.0"
+#define FASTBLEOTA_VERSION_STRING "4.1.0"
 
 // -----------------------------------------------------------------------------
 // Configuration Macros
